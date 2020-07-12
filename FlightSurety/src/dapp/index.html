@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>FlightSurety</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="#">FlightSurety</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
+
+    <main class="container">
+        <div id="display-wrapper" class="top-20">
+        </div>
+        <div class="row top-20">
+            <select id="flight-number">
+                <option value="F123">F123</option>
+                <option value="F456">F456</option>
+                <option value="F789">F789</option>
+            </select>
+            &nbsp;&nbsp;&nbsp;
+            <btn class="btn btn-primary" id="submit-oracle">Submit to Oracles</btn>
+
+        </div>
+        <div class="row top-20">
+            <select id="flight-number-insurance">
+                <option value="F123">F123</option>
+                <option value="F456">F456</option>
+                <option value="F789">F789</option>
+            </select>
+            &nbsp;&nbsp;&nbsp;Ether&nbsp;
+            <input type="number" id="insurance-paid" value="0.1" step="0.1" min="0.1" max="1">
+            &nbsp;&nbsp;&nbsp;
+            <btn class="btn btn-primary" id="buy-insurance">Purchase Insurance</btn>
+        </div>
+    </main>
+
+</body>
+
+</html>
