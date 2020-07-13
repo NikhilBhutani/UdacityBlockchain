@@ -73,9 +73,9 @@ contract FlightSuretyApp {
         _;
     }
 
-        modifier onlyRegisteredAirline(address airlineID) {
+        modifier onlyRegisteredAirline(address airlineAddress) {
         require(
-            flightSuretyData.isRegisteredAirline(airlineID),
+            flightSuretyData.isRegisteredAirline(airlineAddress),
             "Caller is not registered airline"
         );
         _;
@@ -120,30 +120,30 @@ contract FlightSuretyApp {
     * @dev Add an airline to the registration queue
     *
     */   
-    function registerAirline(address airlineID)
+    function registerAirline(address airlineAddress)
         external
         requireIsOperational
         onlyRegisteredAirline(msg.sender) // Only existing airline may register a new airline
         returns (bool success, uint256 votes)
     {
         require(
-            !flightSuretyData.isRegisteredAirline(airlineID),
+            !flightSuretyData.isRegisteredAirline(airlineAddress),
             "Airline is already registered"
         );
         votes = 0;
         success = false;
         if (!flightSuretyData.isMultiPartyConsenusRequired()) {
             // Only existing airline may register a new airline until there are at least four airlines registered
-            flightSuretyData.registerAirline(airlineID, msg.sender);
+            flightSuretyData.registerAirline(airlineAddress, msg.sender);
             success = true;
         } else {
             // Registration of fifth and subsequent airlines requires multi-party consensus of 50% of registered airlines
 
             if (airlineInRegistrationProcess == address(0)) {
-                airlineInRegistrationProcess = airlineID;
+                airlineInRegistrationProcess = airlineAddress;
             } else {
                 require(
-                    airlineInRegistrationProcess == airlineID,
+                    airlineInRegistrationProcess == airlineAddress,
                     "You have to vote for the airline that is in the registration process"
                 );
             }
@@ -161,7 +161,7 @@ contract FlightSuretyApp {
             uint256 totalCountAirlines = flightSuretyData
                 .getRegisteredAirlinesCount();
             if (votes.mul(2) >= totalCountAirlines) {
-                flightSuretyData.registerAirline(airlineID, msg.sender);
+                flightSuretyData.registerAirline(airlineAddress, msg.sender);
                 multiCalls = new address[](0);
                 airlineInRegistrationProcess = address(0);
                 success = true;
@@ -415,10 +415,10 @@ contract FlightSuretyApp {
 }   
 
 contract FlightSuretyData {
-    function registerAirline(address airlineID, address caller)
+    function registerAirline(address airlineAddress, address caller)
         external;
 
-    function isRegisteredAirline(address airlineID)
+    function isRegisteredAirline(address airlineAddress)
         public
         view
         returns (bool);
@@ -433,14 +433,14 @@ contract FlightSuretyData {
         uint256 amount
     ) external payable;
 
-    function isAirlineWithFunds(address airlineID)
+    function isAirlineWithFunds(address airlineAddress)
         public
         view
         returns (bool);
 
     function creditInsurees(string calldata flight, uint256 multiplier) external;
 
-    function fund(address airlineID) public payable;
+    function fund(address airlineAddress) public payable;
 
     function widthdraw(address insuree) external;
 

@@ -100,12 +100,12 @@ contract FlightSuretyData {
         return operational;
     }
 
-    function isRegisteredAirline(address airlineID) public view returns (bool) {
-        return airlines[airlineID].isRegistered;
+    function isRegisteredAirline(address airlineAddress) public view returns (bool) {
+        return airlines[airlineAddress].isRegistered;
     }
 
-    function isAirlineWithFunds(address airlineID) public view returns (bool) {
-        return airlines[airlineID].hasProvidedFunds;
+    function isAirlineWithFunds(address airlineAddress) public view returns (bool) {
+        return airlines[airlineAddress].hasProvidedFunds;
     }
 
     function isMultiPartyConsenusRequired() public view returns (bool) {
@@ -150,7 +150,7 @@ contract FlightSuretyData {
     *      Can only be called from FlightSuretyApp contract
     *
     */   
-    function registerAirline(address airlineID, address caller)
+    function registerAirline(address airlineAddress, address caller)
         public
         requireIsOperational
     {
@@ -166,7 +166,7 @@ contract FlightSuretyData {
         }
 
         require(
-            !airlines[airlineID].isRegistered,
+            !airlines[airlineAddress].isRegistered,
             "Airline is already registered."
         );
 
@@ -175,7 +175,7 @@ contract FlightSuretyData {
             hasProvidedFunds = true;
         }
 
-        airlines[airlineID] = Airline({
+        airlines[airlineAddress] = Airline({
             isRegistered: true,
             hasProvidedFunds: hasProvidedFunds
         });
@@ -236,17 +236,17 @@ contract FlightSuretyData {
     *      resulting in insurance payouts, the contract should be self-sustaining
     *
     */   
-    function fund(address airlineID)
+    function fund(address airlineAddress)
         public
         requireIsOperational
         requireAuthorizedCaller
     {
-        require(isRegisteredAirline(airlineID), "Not registered airline");
+        require(isRegisteredAirline(airlineAddress), "Not registered airline");
         require(
-            !airlines[airlineID].hasProvidedFunds,
+            !airlines[airlineAddress].hasProvidedFunds,
             "You have alredy provided funds"
         );
-        airlines[airlineID].hasProvidedFunds = true;
+        airlines[airlineAddress].hasProvidedFunds = true;
     }
 
     function getFlightKey
